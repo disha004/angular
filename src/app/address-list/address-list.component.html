@@ -1,0 +1,156 @@
+<form [formGroup]="addressForm" *ngIf="addAddress">
+    <div class="container border border-top-0">
+        <div class="float-right">
+            <nav>
+                <button type="button" (click)="toggleAddAddress()" class="btn btn-primary">
+                    {{'back' | translate}}
+                </button>
+            </nav>
+        </div>
+        <div class="row mb-4 mt-4">
+            <div class="col-3">
+                <h2 class="panel-title">{{'add' | translate}}</h2>
+            </div>
+        </div>
+        <div class="row mb-4 mt-4">
+            <div class="col-2"></div>
+            <div class="col-12 form-group">
+                <label for="address">{{'add' | translate}}</label>
+            </div>
+            <div class="col-12 form-group float-label-control">
+                <input id="address" name="address" id="address" (keyup)="retricAddress()"
+                name="address" formControlName="address" type="text"
+                    class="form-control">
+            </div>
+            <div class="text-danger"
+                *ngIf="addressForm.get('address')!.invalid && (addressForm.get('address')!.dirty || addressForm.get('address')!.touched)">
+                Please provide a address with 50 characters allowed.
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-12 form-group">
+                <label for="effdate">{{'effdate' | translate}}</label>
+            </div>
+            <div class="col-2 form-group">
+                <div class="input-group">
+                    <input id="effdate" class="col-10 form-control" name="effdate" [minDate]="minDates"
+                        formControlName="effdate" placeholder="MM-dd-yyyy" ngbDatepicker #d="ngbDatepicker">
+                    <div class="col-2 pl-0 input-group-append">
+                        <a class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button"><i
+                                class="fa fa-calendar"></i></a>
+                    </div>
+                </div>
+                <div class="text-danger"
+                    *ngIf="addressForm.get('effdate')!.invalid && (addressForm.get('effdate')!.dirty || addressForm.get('effdate')!.touched)">
+                    Effective Date Required.
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 form-group">
+                <label for="endate">{{'endate' | translate}}</label>
+            </div>
+            <div class="col-2 form-group">
+                <div class="input-group">
+                    <input id="endate" class=" col-10 form-control" name="endate" formControlName="endate"
+                        placeholder="MM-dd-yyyy" [minDate]="addressForm.get('effdate')!.value" ngbDatepicker
+                        #e="ngbDatepicker">
+                    <div class=" col-2 pl-0 input-group-append">
+                        <a class="btn btn-outline-secondary calendar" (click)="e.toggle()" type="button"><i
+                                class="fa fa-calendar"></i></a>
+                    </div>
+                </div>
+                <div class="text-danger"
+                    *ngIf="addressForm.get('endate')!.invalid && (addressForm.get('endate')!.dirty || addressForm.get('endate')!.touched)">
+                    EndDate Required.
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 form-inline">
+
+                <div class="col-4 form-group">
+                    <nav>
+                        <a routerLink="/customer-list">
+                            <button type="button" (click)="onPrevClick()" class="float-right btn btn-primary">{{'prev' |
+                                translate}}</button></a>
+                    </nav>
+                </div>
+                <div class="col-4 form-group">
+                    <nav>
+                        <button type="button" (click)="onNextClick()" class="float-right btn btn-primary">{{'next' |
+                            translate}}</button>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<div class="container border border-top-0" *ngIf="!addAddress">
+    <div class="">
+        <div style="padding-left: 10px;" class="float-right">
+
+            <button type="button" (click)="toggleAddAddress()" class="btn btn-success">
+                {{'addadd' | translate}}
+            </button>
+
+        </div>
+        &nbsp;
+        <div class="float-right">
+
+            <button type="button" (click)="onNextClick()" class="float-right btn btn-primary">{{'next' |
+                translate}}</button>
+
+        </div>
+    </div>
+    <div class="row mb-4 mt-4" *ngIf="showCustomerDropDown">
+        <div class="col-2"></div>
+        <div class="col-12 form-group">
+            <label for="address">{{'selectCustomer' | translate}}</label>
+        </div>
+        <div class="col-12 form-group float-label-control">
+            <select #mySelect (change)="selectedCustomer(mySelect.value)" class="form-control">  
+                <option>{{'selectCustomer' | translate}}</option>  
+                <option *ngFor="let web of customerList" [value]="web.custid">{{web.firstName}}&nbsp;&nbsp;{{web.lastName}}</option>  
+            </select>  
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-10">
+            <div class="container">
+                <h2>{{'addh' | translate}}</h2>
+                <p></p>
+                <table class="table table-striped">
+                    <tbody>
+                        <tr *ngFor="let friend of friends">
+                            <div class="row">
+                                <div class="col-1"></div>
+                                <div class="col-7">
+                                    <h2>{{ friend.address }}</h2>
+                                </div>
+                                <div class="col-4">
+                                    <button style="margin-right:16px" (click)="deleteAddress(friend.id)"
+                                        class="btn btn-danger"><i class="fa fa-trash-o"></i>{{'del' | translate}}
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-1"></div>
+                                <div class="col-7">{{'effdate' | translate}} : {{ friend.effdate | date: 'MMM d, y'
+                                    }}</div>
+                                <div class="col-4"></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-1"></div>
+                                <div class="col-7">{{'endate' | translate}} : {{ friend.endate | date: 'MMM d, y' }}
+                                </div>
+                                <div class="col-4"></div>
+                            </div>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

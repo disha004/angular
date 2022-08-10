@@ -1,0 +1,224 @@
+
+<mat-accordion class="example-headers-align">
+  <div class="row">
+    <div class="col-2">
+      [{{'lang' | translate}}]
+      <nav><a routerLink=""><img src="/assets/images/cibc.png" alt="cibc" style="height: 50px;width :50px;"></a></nav>
+  </div>
+    <div class="col-8"></div>
+    <div class="col-2">
+      <span class="form-inline">  
+        <img src="/assets/images/english.png"style="height:30px; width:50px;"/>
+         <a [hidden]="lang == 'fr'" (click)="switchLang('fr')"> {{'lang' | translate}}
+        </a>
+         <a [hidden]="lang == 'en'" (click)="switchLang('en')"> {{'lang' | translate}}
+        </a>
+    </span>   
+    </div>
+  </div>
+  <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{'basic' | translate}}
+      </mat-panel-title>
+      <mat-panel-description>
+        {{'basicinfo' | translate}}
+        <mat-icon>account_circle</mat-icon>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <form [formGroup]="customerForm">
+      <mat-form-field appearance="fill">
+        <mat-label>{{'fname' | translate}}</mat-label>
+        <input matInput id="firstName" name="firstName" formControlName="firstName" type="text">
+        <div class="text-danger"
+          *ngIf="customerForm.get('firstName')!.invalid && (customerForm.get('firstName')!.dirty || customerForm.get('firstName')!.touched)">
+          Please provide a firstName.
+        </div>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>{{'lname' | translate}}</mat-label>
+        <input matInput id="lastName" name="lastName" formControlName="lastName" type="text">
+        <div class="text-danger"
+          *ngIf="customerForm.get('lastName')!.invalid && (customerForm.get('lastName')!.dirty || customerForm.get('lastName')!.touched)">
+          Please provide a lastName.
+        </div>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>{{'tele' | translate}}</mat-label>
+        <input matInput id="telephone" name="telephone" formControlName="telephone" type="number">
+        <div class="text-danger"
+          *ngIf="customerForm.get('telephone')!.invalid && (customerForm.get('telephone')!.dirty || customerForm.get('telephone')!.touched)">
+          Please enter valid phonenumber.
+        </div>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>{{'email' | translate}}</mat-label>
+        <input matInput id="email" name="email" formControlName="email" type="text">
+        <div class="text-danger"
+          *ngIf="customerForm.get('email')!.invalid && (customerForm.get('email')!.dirty || customerForm.get('email')!.touched)">
+          Please enter valid email address.
+        </div>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>{{'comment' | translate}}</mat-label>
+        <input matInput id="comment" name="comment" formControlName="comment" (keyup)="retricComment()" type="text">
+        <div class="text-danger"
+          *ngIf="customerForm.get('comment')!.invalid && (customerForm.get('comment')!.dirty || customerForm.get('comment')!.touched)">
+          Please enter valid comments. 50 character allowed.
+        </div>
+      </mat-form-field>
+    </form>
+    <mat-action-row>
+      <button mat-button color="black" (click)="prevStep()">New Customer</button>
+      <button mat-button color="primary" (click)="nextStep()">Next</button>
+    </mat-action-row>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{'address' | translate}}
+      </mat-panel-title>
+      <mat-panel-description>
+        {{'addressinfo' | translate}}
+        <mat-icon>map</mat-icon>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <form [formGroup]="addressForm">
+      <mat-form-field appearance="fill">
+        <mat-label>{{'address' | translate}}</mat-label>
+        <input matInput id="address" name="address" id="address" name="address" formControlName="address" type="text">
+        <div class="text-danger"
+          *ngIf="addressForm.get('address')!.invalid && (addressForm.get('address')!.dirty || addressForm.get('address')!.touched)">
+          Please provide a address with 50 characters allowed.
+        </div>
+      </mat-form-field>
+
+      <mat-form-field color="accent" appearance="fill">
+        <mat-label>{{'effdate' | translate}}</mat-label>
+        <input matInput [matDatepicker]="picker1" id="effdate"  class="col-10 form-control" name="effdate"
+          formControlName="effdate" placeholder="MM-dd-yyyy">
+        <div class="text-danger"
+          *ngIf="addressForm.get('effdate')!.invalid && (addressForm.get('effdate')!.dirty || addressForm.get('effdate')!.touched)">
+          Effective Date Required.
+        </div>
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+      </mat-form-field>
+
+
+      <mat-form-field color="accent" appearance="fill">
+        <mat-label>{{'endate' | translate}}</mat-label>
+        <input matInput [matDatepicker]="picker" id="endate" [min]="addressForm.get('effdate')!.value" class=" col-10 form-control" name="endate"
+          formControlName="endate" placeholder="MM-dd-yyyy">
+        <div class="text-danger"
+          *ngIf="addressForm.get('endate')!.invalid && (addressForm.get('endate')!.dirty || addressForm.get('endate')!.touched)">
+          EndDate Required.
+        </div>
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      <mat-card>Address History
+     
+        <mat-card style="margin: 10px" *ngFor="let friend of friends">
+          <div class="row">
+            <div class="col-1"></div>
+            <div class="col-7">
+              <h2>{{ friend.address }}</h2>
+            </div>
+            <div class="col-4">
+              
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-1"></div>
+            <div class="col-7">{{'effdate' | translate}} : {{ friend.effdate | date: 'MMM d, y'
+              }}</div>
+            <div class="col-4"></div>
+          </div>
+          <div class="row">
+            <div class="col-1"></div>
+            <div class="col-7">{{'endate' | translate}} : {{ friend.endate | date: 'MMM d, y' }}
+            </div>
+            <div class="col-4"><button style="margin-right:16px" (click)="deleteAddress(friend.id)" class="btn btn-danger"><i
+              class="fa fa-trash-o"></i>{{'del' | translate}}
+          </button></div>
+          </div>
+        </mat-card>
+      </mat-card>
+
+    </form>
+    <mat-action-row>
+      <button mat-button color="warn" (click)="prevStep()">Previous</button>
+      <button mat-button color="primary" (click)="nextStep()">Next</button>
+    </mat-action-row>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" hideToggle>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{'review' | translate}}
+      </mat-panel-title>
+      <mat-panel-description>
+        {{'reviewinfo' | translate}}
+        <mat-icon>date_range</mat-icon>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+<form [formGroup]="reviewForm">
+    <mat-form-field appearance="fill">
+      <mat-label>Date</mat-label>
+      <input matInput [matDatepicker]="reviewPicker"  id="revdate" class=" col-10 form-control" name="revdate"
+      formControlName="revdate" placeholder="MM-dd-yyyy">
+      <mat-hint>MM/DD/YYYY</mat-hint>
+      <mat-datepicker-toggle matSuffix [for]="reviewPicker"></mat-datepicker-toggle>
+      <mat-datepicker #reviewPicker></mat-datepicker>
+    </mat-form-field>
+  </form>
+    <mat-action-row>
+      <button mat-button color="warn" (click)="prevStep()">Previous</button>
+      <button mat-button color="primary" (click)="nextStep()">End</button>
+    </mat-action-row>
+  </mat-expansion-panel>
+</mat-accordion>
+<div class="row">
+  <div class="col-2"></div>
+  <div class="col-8">
+    <mat-card  style="width:1000px; margin: 10px" *ngIf="totals != undefined && totals.length > 0">
+      <mat-card  style="margin: 10px" *ngIf="totals == undefined || totals.length == 0">
+        <div style="text-align: center" >
+          <h3>{{ 'nocustomerlist' | translate }}</h3>
+        </div>
+      </mat-card>
+      <mat-card  style="margin: 10px" *ngFor="let total of totals">
+        <div class="row">
+          <div class="col-1"></div>
+          <div class="col-1"><img src="/assets/images/pic.png" alt="cal" style="height:30px;width:30px;margin-top: 10px;"></div>
+          <div class="col-3"><h2 style="margin-top: 10px;">{{ total.firstName }}, {{ total.lastName }}</h2></div>
+          <div class="col-3"></div>
+          <div class="col-4"><label style="margin-top: 10px;color:red;">{{'review' | translate}}: {{ total.revdate }}</label></div>
+      </div>
+      <div class="row">
+        <div class="col-1"></div>
+        <div class="col-3"> {{ total.email }}<br>
+        <h3> {{ total.address }}</h3>
+        </div>
+        <div class="col-4"></div>
+        <div class="col-2">
+          <button type="button" mat-stroked-button style="margin-right:16px" (click)="viewProfile(total.customerId)" color="primary">{{ 'view' |
+            translate}}</button>
+           
+        </div>
+        <div class="col-2"> <button type="button" mat-stroked-button style="margin-right:16px" (click)="deleteProfile(total.customerId)" color="warn">{{ 'del' |
+          translate}}</button></div>
+    </div>
+      </mat-card>
+    </mat-card>
+  </div>
+<div class="col-2"></div>
+</div>

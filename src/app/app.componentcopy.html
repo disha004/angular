@@ -1,0 +1,128 @@
+<!--
+<nav>
+    <a routerLink="customer-list">Customer List</a>
+    <a routerLink="address-list">Address List</a>
+</nav>
+<router-outlet></router-outlet>-->
+<div class="container mb-4 mt-4">
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col-3">
+           [ {{'lang' | translate}} ]
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <br><br>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col-2">
+            <nav><a routerLink=""><img src="/assets/images/cibc.png" alt="cibc" style="height: 50px;width :50px;"></a></nav>
+        </div>
+        <div class="col-4"></div>
+        <div class="col-2">
+            <span class="form-inline">  
+                <select    
+                    class="form-control"    
+                    #selectedLang    
+                    (change)="switchLang(selectedLang.value)">  
+                            <option *ngFor="let language of translate.getLangs()"    
+                    [value]="language"    
+                    [selected]="language === translate.currentLang">    
+                    {{ language }}    
+                    </option>  
+                </select>  
+            </span>   
+        </div>
+        <div class="col-3"></div>
+    </div>
+    <br><br>
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col-2 align-middle border" form-group style="padding:20px">
+            <label (click)="BasicPage()">{{'basic' | translate}}</label>
+        </div>
+        <div class="col-4 align-middle border" form-group  style="padding:20px">
+            <label>{{'basicinfo' | translate}}</label>
+        </div>
+        <div class="col-1 align-middle text-center border" form-group>
+            <img src="/assets/images/pic.png" alt="pic" (click)="BasicPage()" style="height:20px;width:20px;margin-top: 20px;">
+        </div>
+        <div class="col-3"></div>
+    </div>
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col-2 align-middle border" form-group style="padding:20px">
+            <label (click)="AddressPage()">{{'address' | translate}}</label>
+        </div>
+        <div class="col-4 align-middle border" form-group  style="padding:20px">
+            <label>{{'addressinfo' | translate}}</label>
+        </div>
+        <div class="col-1 align-middle text-center border" form-group>
+            <img src="/assets/images/pic.png" (click)="AddressPage()" alt="pic" style="height:20px;width:20px;margin-top: 20px;">
+        </div>
+        <div class="col-3"></div>
+    </div>
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col-2 align-middle border" form-group style="padding:20px">
+            <label (click)="ReviewPage()">{{'review' | translate}}</label>
+        </div>
+        <div class="col-4 align-middle border" form-group  style="padding:20px">
+            <label>{{'reviewinfo' | translate}}</label>
+        </div>
+        <div class="col-1 align-middle text-center border" form-group>
+            <img src="/assets/images/cal.png" (click)="ReviewPage()" alt="cal" style="height:30px;width:30px;margin-top: 20px;">
+        </div>
+        <div class="col-3"></div>
+    </div>
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col-7">
+            <div class="container">
+                <h3></h3>
+                <p></p>            
+                <table class="table table-striped">
+                    <tbody>
+                    <tr *ngFor="let total of totals">
+                        <div class="row">
+                            <div class="col-1"></div>
+                            <div class="col-1"><img src="/assets/images/pic.png" alt="cal" style="height:30px;width:30px;margin-top: 10px;"></div>
+                            <div class="col-3"><h2 style="margin-top: 10px;">{{ total.firstName }}, {{ total.lastName }}</h2></div>
+                            <div class="col-3"></div>
+                            <div class="col-4"><label style="margin-top: 10px;color:red;">{{'review' | translate}}: {{ total.revdate }}</label></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-1"></div>
+                            <div class="col-3"> {{ total.email }}</div>
+                            <div class="col-4"></div>
+                            <div class="col-2">
+                                <button style="margin-right:16px" (click)="viewProfile(total.customerId)" class="btn btn-info">{{'view' | translate}}</button>
+                            </div>
+                            <div class="col-2">
+                                <button style="margin-right:16px" (click)="deleteProfile(total.customerId)" class="btn btn-danger">{{'del' | translate}}</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-1"></div>
+                            <div class="col-3"> {{ total.address }}</div>
+                            <div class="col-8"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12" style="margin-bottom:10px"></div>
+                        </div>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+        <div class="col-3"></div>
+    </div>
+</div>
+<router-outlet></router-outlet>
